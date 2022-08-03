@@ -9,7 +9,7 @@ module.exports.getProductById = async (event) => {
         status = 500;
     } else {
         const id = event[`pathParameters`].productId;
-        product = getById(id);
+        product = await getById(id);
         if(product === undefined) {
             status = 404
             product = {

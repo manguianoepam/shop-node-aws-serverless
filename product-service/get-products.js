@@ -4,7 +4,7 @@ const selectAll = require('./controller/product.controller').selectAll;
 
 module.exports.getProductsList = async () => {
     console.log('getProductsList Started')
-    const products = selectAll();
+    const products = await selectAll();
     console.log('getProductsList executed')
     console.log(JSON.stringify(products));
     return {

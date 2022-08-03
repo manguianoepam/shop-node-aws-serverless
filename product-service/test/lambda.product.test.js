@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const lambda = require('lambda-tester');
 
 const getProductList = require('../get-products').getProductsList;
-const getProductById = require('../get-product').getProductsById;
+const getProductById = require('../get-product').getProductById;
 
 describe('product-service', () => {
 
