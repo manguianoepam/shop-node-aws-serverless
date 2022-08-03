@@ -2,6 +2,7 @@
 const model = require('../model/product.model').products;
 
 const selectAll = function () {
+    console.log(`${model}`)
     return model;
 }
 

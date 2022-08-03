@@ -2,7 +2,7 @@
 
 const getById = require('./controller/product.controller').selectById;
 
-module.exports.getProductsById = async (event) => {
+module.exports.getProductById = async (event) => {
     let status = 200;
     let product = {}
     if (event[`pathParameters`].productId === '' || !event[`pathParameters`].productId) {
@@ -17,6 +17,7 @@ module.exports.getProductsById = async (event) => {
             }
         }
     }
+    console.log(product);
     return {
         statusCode: status,
         headers: {
