@@ -25,11 +25,19 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: us-east-1
+  environment:
+    USER_DB: ${self:custom.dotenvVars.USER_DB, env:USER_DB, ''}
+    HOST_DB: ${self:custom.dotenvVars.HOST_DB, env:HOST_DB, ''}
+    PWD_DB: ${self:custom.dotenvVars.PWD_DB, env:PWD_DB, ''}
+    PORT_DB: ${self:custom.dotenvVars.PORT_DB, env:PORT_DB, ''}
+    DB_NAME: ${self:custom.dotenvVars.DB_NAME, env:DB_NAME, ''}
 
 plugins:
   - serverless-webpack
+  - serverless-dotenv-plugin
 
 custom:
+  dotenvVars: ${./configs.js)}
   webpack:
     webpackConfig: 'webpack.config.js' # Name of webpack configuration file
     includeModules: false
@@ -76,3 +84,19 @@ functions:
             parameters:
               paths:
                 productId: true
+  createProduct:
+    handler: create-product.createProduct
+    events:
+      - http:
+          path: products
+          method: post
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
