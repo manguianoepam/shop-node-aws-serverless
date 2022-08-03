@@ -35,7 +35,7 @@ describe('product-service', () => {
                     .expectResult(response => response);
 
                 expect(result.statusCode).equals(404);
-                expect(result.body).equals(undefined);
+                expect(JSON.parse(result.body).message).equals('Product not found');
             });
 
             it('Should return 200 with productId', async () => {

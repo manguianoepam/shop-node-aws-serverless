@@ -12,6 +12,9 @@ module.exports.getProductsById = async (event) => {
         product = getById(id);
         if(product === undefined) {
             status = 404
+            product = {
+                message: 'Product not found'
+            }
         }
     }
     return {
