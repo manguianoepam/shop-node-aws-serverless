@@ -39,6 +39,7 @@ describe('product-service', () => {
                 expect(JSON.parse(result.body).message).equals('Product not found');
             });
 
+
             it('Should return 200 with productId', async () => {
                 const result = await lambda(getProductById)
                     .event({'pathParameters': {'productId': 'ABCDE102030'}})
