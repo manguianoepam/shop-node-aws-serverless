@@ -2,18 +2,22 @@
 
 const getById = require('./controller/product.controller').selectById;
 
-module.exports.getProductsById = async (event) => {
+module.exports.getProductById = async (event) => {
     let status = 200;
     let product = {}
     if (event[`pathParameters`].productId === '' || !event[`pathParameters`].productId) {
         status = 500;
     } else {
         const id = event[`pathParameters`].productId;
-        product = getById(id);
+        product = await getById(id);
         if(product === undefined) {
             status = 404
+            product = {
+                message: 'Product not found'
+            }
         }
     }
+    console.log(product);
     return {
         statusCode: status,
         headers: {

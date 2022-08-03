@@ -3,7 +3,10 @@
 const selectAll = require('./controller/product.controller').selectAll;
 
 module.exports.getProductsList = async () => {
-    const products = selectAll();
+    console.log('getProductsList Started')
+    const products = await selectAll();
+    console.log('getProductsList executed')
+    console.log(JSON.stringify(products));
     return {
         statusCode: 200,
         headers: {

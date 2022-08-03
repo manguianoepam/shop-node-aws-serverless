@@ -26,6 +26,15 @@ provider:
   stage: dev
   region: us-east-1
 
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: false
+    packager: 'npm'
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
@@ -47,23 +56,23 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
-  getProductsById:
+  getProductById:
     handler: get-product.getProductById
     events:
       - http:
           path: /products/{productId}
           method: get
-    cors:
-      origins: '*'
-      headers:
-        - Content-Type
-        - X-Amz-Date
-        - Authorization
-        - X-Api-Key
-        - X-Amz-Security-Token
-        - X-Amz-User-Agent
-      allowCredentials: false
-    request:
-      parameters:
-        paths:
-          productId: true
+          cors:
+            origins: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
+          request:
+            parameters:
+              paths:
+                productId: true

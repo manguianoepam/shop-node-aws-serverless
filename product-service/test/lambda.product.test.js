@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const lambda = require('lambda-tester');
 
 const getProductList = require('../get-products').getProductsList;
-const getProductById = require('../get-product').getProductsById;
+const getProductById = require('../get-product').getProductById;
 
 describe('product-service', () => {
 
@@ -35,7 +35,7 @@ describe('product-service', () => {
                     .expectResult(response => response);
 
                 expect(result.statusCode).equals(404);
-                expect(result.body).equals(undefined);
+                expect(JSON.parse(result.body).message).equals('Product not found');
             });
 
             it('Should return 200 with productId', async () => {

@@ -1,0 +1,15 @@
+# package directories
+../node_modules
+../jspm_packages
+../.idea
+
+../package-lock.json
+
+.env
+# Serverless directories
+.serverless
+
+../.env
+
+.gitignore
+
