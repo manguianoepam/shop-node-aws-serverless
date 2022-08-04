@@ -9,7 +9,5 @@
 # Serverless directories
 .serverless
 
-../.env
-
 .gitignore
 
