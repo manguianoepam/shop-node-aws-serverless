@@ -3,12 +3,14 @@
 const AWS = require('aws-sdk');
 const path = require('path');
 const csv = require('csv-parser')
-require('dotenv').config({path: path.resolve(__dirname, '../.env')})
+require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
 const s3 = new AWS.S3({region: 'us-east-1'});
+const sqs = new AWS.SQS({region: 'us-east-1'});
 
 const bucket = process.env.BUCKET;
 const uploaded = process.env.PATH_AWS;
+const SQS_URL = process.env.SQS_URL;
 
 const getSignedImage = (image) => new Promise(async (resolve, reject) => {
     try {
@@ -78,12 +80,39 @@ const moveImage = async (image) => {
 
         await s3.deleteObject(params).promise();
 
+        const data = {}
+
+        data.title = 'Test SQS';
+        data.description = 'Description From SQS';
+        data.price = 0;
+        data.count = 0;
+
+        sender(data);
+
         console.log(`Copied into ${bucket}/${JSON.stringify(image.replace('images', path))}`);
         return true;
     } catch (error) {
         console.log(`Error on moveImage: ${error}`);
         return false;
     }
+}
+
+const sender = async (data) => {
+    console.log(`Sender SQS executing`);
+    const params = {
+        MessageBody: data,
+        QueueUrl: SQS_URL
+    };
+
+    console.log(`Params SQS ${params}`)
+
+    await sqs.sendMessage(params, (error, data) => {
+        console.log(`sqs.sendMessage`);
+        if(error) {
+            console.log(`Error on sqs send message ${error}`);
+        }
+        console.log(`Data: ${data}`);
+    })
 }
 
 module.exports = {getSignedImage, moveImage}

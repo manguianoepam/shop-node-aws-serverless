@@ -30,6 +30,7 @@ provider:
     REGION: ${self:custom.dotenvVars.REGION, env:REGION, ''}
     BUCKET: ${self:custom.dotenvVars.BUCKET, env:BUCKET, ''}
     PATH_AWS: ${self:custom.dotenvVars.PATH_AWS, env:PATH_AWS, ''}
+    SQS_URL: ${self:custom.dotenvVars.SQS_URL, env:SQS_URL, ''}
   iamRoleStatements:
     - Effect: Allow
       Action: 's3:ListBucket'
@@ -40,6 +41,9 @@ provider:
         - 's3:*'
       Resource:
         - 'arn:aws:s3:::src-image-shop/*'
+    - Effect: Allow
+      Action: 'sqs:SendMessage'
+      Resource: 'arn:aws:sqs:us-east-1:436988374415:catalogItemsQueue.fifo'
 
 plugins:
   - serverless-webpack
