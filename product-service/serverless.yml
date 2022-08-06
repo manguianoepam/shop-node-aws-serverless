@@ -114,6 +114,6 @@ functions:
       - sqs:
           arn: 'arn:aws:sqs:us-east-1:436988374415:catalogItemsQueue.fifo'
           batchSize: 5
-      - sns:
-          arn: 'arn:aws:sns:us-east-1:436988374415:createProductTopic'
-          topicName: createProductTopic
+#      - sns:
+#          arn: 'arn:aws:sns:us-east-1:436988374415:createProductTopic'
+#          topicName: createProductTopic

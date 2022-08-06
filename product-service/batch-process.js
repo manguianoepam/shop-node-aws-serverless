@@ -8,15 +8,19 @@ const product = require('./controller/product.controller').create;
 const stock = require('./controller/stock.controller').create;
 
 module.exports.catalogBatchProcess = async (event) => {
+    console.log(JSON.stringify(event));
     //revived sqs event
     for (const record of event.Records) {
         //create product
-        const body = JSON.parse(record.body);
-
+        console.log(JSON.stringify(record));
+        const body = JSON.parse(JSON.parse(record.body));
         const p = {};
         p.id = uuidv4();
         p.title = body.title;
         p.price = body.price;
+        p.description = body.description;
+
+        console.log(JSON.stringify(p));
 
         let isCreated = await product(p);
 
@@ -28,7 +32,7 @@ module.exports.catalogBatchProcess = async (event) => {
             isCreated = await stock(s);
 
             if (isCreated) {
-                util.sendEmail(p);
+                await util.sendEmail(p);
             }
         }
     }

@@ -5,6 +5,7 @@ const lambda = require('lambda-tester');
 const getProductList = require('../get-products').getProductsList;
 const getProductById = require('../get-product').getProductById;
 const createProduct = require('../create-product').createProduct;
+const batch = require('../batch-process').catalogBatchProcess
 
 describe('product-service', () => {
 
@@ -548,6 +549,38 @@ describe('product-service', () => {
 
                 expect(result.statusCode).equals(201);
             });
+        });
+
+        describe('batch-lambda', () => {
+            it('Getting SQS Message', async () => {
+                await lambda(batch)
+                    .event(
+                        {
+                            "Records": [
+                                {
+                                    "messageId": "48e3ff89-33cc-451f-b564-4036a0094d65",
+                                    "receiptHandle": "AQEBteTrXlEu1TBfJzaJMyipS+McKYkf8UrBKn/jzFaRfNbq8edSXg25eZ1nl1gomZzmqdKqOpaHRgxoQklgj/g4shF41b2uLGCk8BezFMKD1Wwmns+U7pgk6zcNotVBmmtn2WLOOEIOek3fpNALG8s6DRJ87xyMuy5izE0Q/YUkIcb9knXRfdWgLBLHlm1P/cJ/3v3jIlOZKcMX4zB/DSQIFIqaXHH+3PLXq9T9rdAMa7g1ScCUQ+g49dP5wWCJ80H8+attjoc1PkW/i/UT0lMxiTy0BLqGe5WljJG6s0ghMzc=",
+                                    "body": "\"{\\\"title\\\":\\\"Test SQS\\\",\\\"description\\\":\\\"Description From SQS\\\",\\\"price\\\":0,\\\"count\\\":0}\"",
+                                    "attributes": {
+                                        "ApproximateReceiveCount": "1",
+                                        "SentTimestamp": "1659737693375",
+                                        "SequenceNumber": "18871636923213551616",
+                                        "MessageGroupId": "test",
+                                        "SenderId": "AIDAWLPUJNWH4HTC6FCEQ",
+                                        "MessageDeduplicationId": "test",
+                                        "ApproximateFirstReceiveTimestamp": "1659737693375"
+                                    },
+                                    "messageAttributes": {},
+                                    "md5OfBody": "5552aaf6126dd9668cdf421186622f2d",
+                                    "eventSource": "aws:sqs",
+                                    "eventSourceARN": "arn:aws:sqs:us-east-1:436988374415:catalogItemsQueue.fifo",
+                                    "awsRegion": "us-east-1"
+                                }
+                            ]
+                        }
+                    )
+                    .expectResult(result => result);
+            })
         });
     });
 

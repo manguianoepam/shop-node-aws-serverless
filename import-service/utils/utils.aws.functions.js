@@ -72,10 +72,12 @@ const moveImage = async (image) => {
             });*/
 
         console.log(`${bucket}/${image}`);
+        console.log(`path`)
+
         await s3.copyObject({
             Bucket: bucket,
             CopySource: `${bucket}/${image}`,
-            Key: image.replace('images', path)
+            Key: image.replace('images', uploaded)
         }).promise();
 
         await s3.deleteObject(params).promise();
@@ -87,9 +89,9 @@ const moveImage = async (image) => {
         data.price = 0;
         data.count = 0;
 
-        sender(data);
+        await sender(data);
 
-        console.log(`Copied into ${bucket}/${JSON.stringify(image.replace('images', path))}`);
+        console.log(`Copied into ${bucket}/${image.replace('images', uploaded)}`);
         return true;
     } catch (error) {
         console.log(`Error on moveImage: ${error}`);
@@ -97,21 +99,21 @@ const moveImage = async (image) => {
     }
 }
 
-const sender = async (data) => {
+const sender = async (dataPorduct) => {
     console.log(`Sender SQS executing`);
     const params = {
-        MessageBody: data,
+        MessageBody: JSON.stringify(dataPorduct),
         QueueUrl: SQS_URL
     };
 
-    console.log(`Params SQS ${params}`)
+    console.log(`Params SQS ${JSON.stringify(params)}`)
 
     await sqs.sendMessage(params, (error, data) => {
         console.log(`sqs.sendMessage`);
         if(error) {
-            console.log(`Error on sqs send message ${error}`);
+            console.log(`Error on sqs send message ${JSON.stringify(error)}`);
         }
-        console.log(`Data: ${data}`);
+        console.log(`Data: ${JSON.stringify(data)}`);
     })
 }
 

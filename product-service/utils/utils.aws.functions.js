@@ -7,19 +7,20 @@ const topic = process.env.SNS_TOPIC;
 
 const sendEmail = async (product) => {
     console.log(`sendEmail executing`);
+    console.log(topic)
     try {
         const params = {
-            Message: `The product ${product.time} with ID: ${product.id} has been created`,
-            TopicARN: topic
+            TopicArn: topic,
+            Message: `The product ${product.time} with ID: ${product.id} has been created`
         }
 
         console.log(`Params SNS: ${params}`);
 
-        sns.publish(params, (error, data) => {
+        await sns.publish(params, (error, data) => {
             if(error) {
                 console.log(`Error on sns.publish: ${error}`);
             }
-            console.log(`Data: ${data}`);
+            console.log(`Data: ${JSON.stringify(data)}`);
         });
     } catch (error) {
         console.log(`Error on sendEmail: ${error}`);
