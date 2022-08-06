@@ -14,6 +14,7 @@ const bucket = process.env.BUCKET;
 const uploaded = process.env.PATH_AWS;
 const SQS_URL = process.env.SQS_URL;
 
+
 const getSignedImage = (image) => new Promise(async (resolve, reject) => {
     try {
         console.log(`getSignedImage executing`);
