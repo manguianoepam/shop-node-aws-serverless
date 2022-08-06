@@ -3,6 +3,8 @@
 const AWS = require('aws-sdk');
 const path = require('path');
 const csv = require('csv-parser')
+const {v4: uuidv4} = require('uuid');
+
 require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
 const s3 = new AWS.S3({region: 'us-east-1'});
@@ -71,9 +73,6 @@ const moveImage = async (image) => {
                 console.log(`Copied into ${bucket}/${image.replace('images', path)}`);
             });*/
 
-        console.log(`${bucket}/${image}`);
-        console.log(`path`)
-
         await s3.copyObject({
             Bucket: bucket,
             CopySource: `${bucket}/${image}`,
@@ -82,14 +81,15 @@ const moveImage = async (image) => {
 
         await s3.deleteObject(params).promise();
 
-        const data = {}
+        const product = {}
 
-        data.title = 'Test SQS';
-        data.description = 'Description From SQS';
-        data.price = 0;
-        data.count = 0;
+        product.id = uuidv4();
+        product.title = image.substring(7, image.length - 4);
+        product.description = image.substring(7, image.length - 4);
+        product.price = 0;
+        product.count = 0;
 
-        await sender(data);
+        await sender(product);
 
         console.log(`Copied into ${bucket}/${image.replace('images', uploaded)}`);
         return true;
@@ -99,22 +99,29 @@ const moveImage = async (image) => {
     }
 }
 
-const sender = async (dataPorduct) => {
-    console.log(`Sender SQS executing`);
-    const params = {
-        MessageBody: JSON.stringify(dataPorduct),
-        QueueUrl: SQS_URL
-    };
+const sender = async (product) => {
+    try {
+        console.log(`Sender SQS executing`);
+        const params = {
+            MessageBody: JSON.stringify(product),
+            MessageDeduplicationId: product.id,
+            MessageGroupId: product.id,
+            QueueUrl: SQS_URL
+        };
 
-    console.log(`Params SQS ${JSON.stringify(params)}`)
+        console.log(`Params SQS ${JSON.stringify(params)}`)
 
-    await sqs.sendMessage(params, (error, data) => {
-        console.log(`sqs.sendMessage`);
-        if(error) {
-            console.log(`Error on sqs send message ${JSON.stringify(error)}`);
-        }
-        console.log(`Data: ${JSON.stringify(data)}`);
-    })
+        await sqs.sendMessage(params, (error, data) => {
+            console.log(`sqs.sendMessage`);
+            if (error) {
+                console.log(`Error on sqs send message ${JSON.stringify(error)}`);
+            }
+            console.log(`Data: ${JSON.stringify(data)}`);
+        })
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 module.exports = {getSignedImage, moveImage}

@@ -1,7 +1,5 @@
 'use strict';
 
-const {v4: uuidv4} = require('uuid');
-
 const util = require('./utils/utils.aws.functions');
 
 const product = require('./controller/product.controller').create;
@@ -13,9 +11,9 @@ module.exports.catalogBatchProcess = async (event) => {
     for (const record of event.Records) {
         //create product
         console.log(JSON.stringify(record));
-        const body = JSON.parse(JSON.parse(record.body));
+        const body = JSON.parse(record.body);
         const p = {};
-        p.id = uuidv4();
+        p.id = body.id;
         p.title = body.title;
         p.price = body.price;
         p.description = body.description;

@@ -553,14 +553,14 @@ describe('product-service', () => {
 
         describe('batch-lambda', () => {
             it('Getting SQS Message', async () => {
-                await lambda(batch)
+                const result = await lambda(batch)
                     .event(
                         {
                             "Records": [
                                 {
                                     "messageId": "48e3ff89-33cc-451f-b564-4036a0094d65",
                                     "receiptHandle": "AQEBteTrXlEu1TBfJzaJMyipS+McKYkf8UrBKn/jzFaRfNbq8edSXg25eZ1nl1gomZzmqdKqOpaHRgxoQklgj/g4shF41b2uLGCk8BezFMKD1Wwmns+U7pgk6zcNotVBmmtn2WLOOEIOek3fpNALG8s6DRJ87xyMuy5izE0Q/YUkIcb9knXRfdWgLBLHlm1P/cJ/3v3jIlOZKcMX4zB/DSQIFIqaXHH+3PLXq9T9rdAMa7g1ScCUQ+g49dP5wWCJ80H8+attjoc1PkW/i/UT0lMxiTy0BLqGe5WljJG6s0ghMzc=",
-                                    "body": "\"{\\\"title\\\":\\\"Test SQS\\\",\\\"description\\\":\\\"Description From SQS\\\",\\\"price\\\":0,\\\"count\\\":0}\"",
+                                    "body": "{\"id\":\"c835d671-a3f6-49be-8142-9c7dc3bb2c31\",\"title\":\"Test SQS\",\"description\":\"Description From SQS\",\"price\":0,\"count\":0}",
                                     "attributes": {
                                         "ApproximateReceiveCount": "1",
                                         "SentTimestamp": "1659737693375",
@@ -580,6 +580,8 @@ describe('product-service', () => {
                         }
                     )
                     .expectResult(result => result);
+
+                expect(result.statusCode).equals(200);
             })
         });
     });
