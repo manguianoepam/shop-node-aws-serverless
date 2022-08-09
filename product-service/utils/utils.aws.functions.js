@@ -11,7 +11,7 @@ const sendEmail = async (product) => {
     try {
         const params = {
             TopicArn: topic,
-            Message: `The product ${product.time} with ID: ${product.id} has been created`
+            Message: `The product ${product.title} with ID: ${product.id} has been created`
         }
 
         console.log(`Params SNS: ${params}`);
