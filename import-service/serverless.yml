@@ -45,6 +45,18 @@ provider:
       Action: 'sqs:SendMessage'
       Resource: 'arn:aws:sqs:us-east-1:436988374415:catalogItemsQueue.fifo'
 
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
 plugins:
   - serverless-webpack
   - serverless-dotenv-plugin

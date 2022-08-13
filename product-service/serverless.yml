@@ -39,6 +39,24 @@ provider:
     - Effect: Allow
       Action: 'sns:Publish'
       Resource: 'arn:aws:sns:us-east-1:436988374415:createProductTopic'
+    - Effect: Allow
+      Action:
+        - cognito-idp:AdminInitiateAuth
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminSetUserPassword
+      Resource: "*"
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
 
 plugins:
   - serverless-webpack
@@ -62,6 +80,10 @@ functions:
       - http:
           path: products
           method: get
+          authorizer:
+            name: 'cognito-login-shop'
+            type: COGNITO_USER_POOLS
+            arn:  arn:aws:cognito-idp:us-east-1:436988374415:userpool/us-east-1_tmvOf8pSP
           cors:
             origins: '*'
             headers:
