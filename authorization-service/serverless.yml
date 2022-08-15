@@ -1,0 +1,26 @@
+service: authorization-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    manguianoepam: ${self:custom.dotenvVars.manguianoepam, env:manguianoepam, ''}
+
+plugins:
+  - serverless-webpack
+  - serverless-dotenv-plugin
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+    includeModules: false
+    packager: 'npm'
+    dotenvVars: ${./configs.js)}
+
+functions:
+  hello:
+    handler: handler.hello
+  basicAuthorizer:
+    handler: authorization.basicAuthorizer
