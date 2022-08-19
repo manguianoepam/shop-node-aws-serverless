@@ -30,7 +30,6 @@ const basicAuthorizer = async (event) => {
     return policy;
 };
 
-
 module.exports = {
     basicAuthorizer
 }
