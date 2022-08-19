@@ -23,4 +23,4 @@ functions:
   hello:
     handler: handler.hello
   basicAuthorizer:
-    handler: authorization.basicAuthorizer
+    handler: handler.authorizer

@@ -1,5 +1,10 @@
 'use strict';
 
+const {catalogBatchProcess} = require('./src/batch-process');
+const {createProduct} = require('./src/create-product');
+const {getProductById} = require('./src/get-product');
+const {getProductsList} = require('./src/get-products')
+
 module.exports.hello = async (event) => {
     return {
         statusCode: 200,
@@ -12,7 +17,20 @@ module.exports.hello = async (event) => {
             2
         ),
     };
-
-    // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-    // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };
+
+module.exports.batch = async (event) => {
+    return catalogBatchProcess(event);
+}
+
+module.exports.newProduct = async (event) => {
+    return createProduct(event);
+}
+
+module.exports.product = async (event) => {
+    return getProductById(event);
+}
+
+module.exports.products = async () => {
+    return getProductsList();
+}

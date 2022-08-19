@@ -1,12 +1,12 @@
 'use strict';
 const {v4: uuidv4} = require('uuid');
 
-const product = require('./controller/product.controller').create;
-const stock = require('./controller/stock.controller').create;
+const product = require('../controller/product.controller').create;
+const stock = require('../controller/stock.controller').create;
 
-const utils = require('./utils/utils.functions');
+const utils = require('../utils/utils.functions');
 
-module.exports.createProduct = async (event) => {
+const createProduct = async (event) => {
     let data;
     let status = 201;
 
@@ -72,3 +72,5 @@ module.exports.createProduct = async (event) => {
         body: JSON.stringify(data)
     };
 }
+
+module.exports = {createProduct}

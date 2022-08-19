@@ -1,8 +1,8 @@
 'use strict';
 
-const getById = require('./controller/product.controller').selectById;
+const getById = require('../controller/product.controller').selectById;
 
-module.exports.getProductById = async (event) => {
+const getProductById = async (event) => {
     let status = 200;
     let product = {}
     if (event[`pathParameters`].productId === '' || !event[`pathParameters`].productId) {
@@ -27,3 +27,5 @@ module.exports.getProductById = async (event) => {
         body: JSON.stringify(product)
     };
 }
+
+module.exports = {getProductById}

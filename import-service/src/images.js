@@ -1,7 +1,7 @@
 'use strict';
-const utils = require('./utils/utils.aws.functions');
+const utils = require('../utils/utils.aws.functions');
 
-module.exports.importProductsFile = async (event) => {
+const importProductsFile = async (event) => {
     const body = {};
     let status = 200
 
@@ -25,3 +25,5 @@ module.exports.importProductsFile = async (event) => {
         body: JSON.stringify(body)
     };
 }
+
+module.exports = {importProductsFile}

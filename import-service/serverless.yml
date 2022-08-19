@@ -73,7 +73,7 @@ functions:
   hello:
     handler: handler.hello
   getSignedImage:
-    handler: images.importProductsFile
+    handler: handler.images
     events:
       - http:
           path: /import/{nameImage}
@@ -98,7 +98,7 @@ functions:
               paths:
                 nameImage: true
   importFileParser:
-    handler: image.importFileParser
+    handler: handler.image
     events:
       - s3:
           bucket: src-image-shop

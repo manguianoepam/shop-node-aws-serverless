@@ -1,8 +1,8 @@
 'use strict';
 
-const utils = require('./utils/utils.aws.functions');
+const utils = require('../utils/utils.aws.functions');
 
-module.exports.importFileParser = async (event) => {
+const importFileParser = async (event) => {
     console.log(`Event: ${JSON.stringify(event)}`);
     for (const record of event.Records) {
         await utils.moveImage(record.s3.object.key);
@@ -13,3 +13,5 @@ module.exports.importFileParser = async (event) => {
         body: `importFileParser executed`
     };
 }
+
+module.exports = {importFileParser}

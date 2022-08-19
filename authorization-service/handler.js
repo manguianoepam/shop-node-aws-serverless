@@ -19,8 +19,8 @@ module.exports.hello = async (event) => {
   // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };
 
-module.exports.test = async (event, context, callback ) => {
-    const policy = await basicAuthorizer(event).then(result => result).catch(error => error);
+module.exports.authorizer = async (event, context, callback ) => {
+    const policy = await basicAuthorizer(event);
 
     callback(null, policy);
 }

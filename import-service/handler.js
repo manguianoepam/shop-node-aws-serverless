@@ -1,5 +1,8 @@
 'use strict';
 
+const {importProductsFile} = require('./src/images');
+const {importFileParser} = require('./src/image');
+
 module.exports.hello = async (event) => {
   return {
     statusCode: 200,
@@ -12,7 +15,13 @@ module.exports.hello = async (event) => {
       2
     ),
   };
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };
+
+
+module.exports.images = async (event) => {
+    return importProductsFile(event);
+}
+
+module.exports.image = async (event) => {
+    return importFileParser(event);
+}

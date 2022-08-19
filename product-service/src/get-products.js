@@ -1,8 +1,8 @@
 'use strict';
 
-const selectAll = require('./controller/product.controller').selectAll;
+const selectAll = require('../controller/product.controller').selectAll;
 
-module.exports.getProductsList = async () => {
+const getProductsList = async () => {
     console.log('getProductsList Started')
     const products = await selectAll();
     console.log('getProductsList executed')
@@ -16,3 +16,5 @@ module.exports.getProductsList = async () => {
         body: JSON.stringify(products)
     };
 }
+
+module.exports = {getProductsList}

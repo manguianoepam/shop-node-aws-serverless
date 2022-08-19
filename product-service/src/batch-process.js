@@ -1,11 +1,11 @@
 'use strict';
 
-const util = require('./utils/utils.aws.functions');
+const util = require('../utils/utils.aws.functions');
 
-const product = require('./controller/product.controller').create;
-const stock = require('./controller/stock.controller').create;
+const product = require('../controller/product.controller').create;
+const stock = require('../controller/stock.controller').create;
 
-module.exports.catalogBatchProcess = async (event) => {
+const catalogBatchProcess = async (event) => {
     console.log(JSON.stringify(event));
     //revived sqs event
     for (const record of event.Records) {
@@ -40,3 +40,5 @@ module.exports.catalogBatchProcess = async (event) => {
         body: `catalogBatchProcess executed`
     };
 };
+
+module.exports = {catalogBatchProcess}

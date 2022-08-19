@@ -76,7 +76,7 @@ custom:
 
 functions:
   getProductsList:
-    handler: get-products.getProductsList
+    handler: handler.products
     events:
       - http:
           path: products
@@ -96,7 +96,7 @@ functions:
               - X-Amz-User-Agent
             allowCredentials: false
   getProductById:
-    handler: get-product.getProductById
+    handler: handler.product
     events:
       - http:
           path: /products/{productId}
@@ -116,7 +116,7 @@ functions:
               paths:
                 productId: true
   createProduct:
-    handler: create-product.createProduct
+    handler: handler.newProduct
     events:
       - http:
           path: products
@@ -132,7 +132,7 @@ functions:
               - X-Amz-User-Agent
             allowCredentials: false
   catalogBatchProcess:
-    handler: batch-process.catalogBatchProcess
+    handler: handler.batch
     events:
       - sqs:
           arn: 'arn:aws:sqs:us-east-1:436988374415:catalogItemsQueue.fifo'
