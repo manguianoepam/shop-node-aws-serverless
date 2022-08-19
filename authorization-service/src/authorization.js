@@ -3,9 +3,9 @@
 const path = require('path');
 require('dotenv').config({path: path.resolve(__dirname, './.env')});
 
-const utils = require('./utils/util.function');
+const utils = require('../utils/util.function');
 
-module.exports.basicAuthorizer = async (event, context, callback) => {
+const basicAuthorizer = async (event) => {
     console.log(`Event: ${JSON.stringify(event)}`)
     let effect;
     let token = '';
@@ -27,5 +27,10 @@ module.exports.basicAuthorizer = async (event, context, callback) => {
 
     console.log(`Policy: ${JSON.stringify(policy)}`);
 
-    callback(null, policy);
+    return policy;
 };
+
+
+module.exports = {
+    basicAuthorizer
+}
