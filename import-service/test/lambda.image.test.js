@@ -1,13 +1,12 @@
 const expect = require('chai').expect;
 const lambda = require('lambda-tester');
-const getImage = require('../images').importProductsFile;
-const moveImage = require('../image').importFileParser;
+const handler = require('../handler');
 
 describe('import-service', () => {
     describe('lambdas', () => {
         describe('get-image',  () => {
             it('Should return 500', async () => {
-                const result = await lambda(getImage)
+                const result = await lambda(handler.images)
                     .event({'pathParameters': {'nameImage': ''}})
                     .expectResult(data => data);
                 expect(JSON.parse(result.statusCode)).equals(500);
@@ -15,7 +14,7 @@ describe('import-service', () => {
             });
 
             it('Should return 200', async () => {
-                const result = await lambda(getImage)
+                const result = await lambda(handler.images)
                     .event({'pathParameters': {'nameImage': 'Alexa'}})
                     .expectResult(data => data);
                 expect(JSON.parse(result.statusCode)).equals(200);
@@ -25,7 +24,7 @@ describe('import-service', () => {
 
         describe('move-image',  () => {
             it('Should return', async () => {
-                const result = await lambda(moveImage)
+                const result = await lambda(handler.image)
                     .event(
                         {
                             "Records": [

@@ -3,13 +3,13 @@
 const expect = require('chai').expect;
 const lambda = require('lambda-tester');
 
-const basic = require('../authorization').basicAuthorizer;
+const handler = require('../handler');
 
 describe('Authorization Test', () => {
     describe('lambda', () => {
         describe('authorization', () => {
             it('Should get Allow Effect', async () => {
-                const result = await lambda(basic)
+                const result = await lambda(handler.authorizer)
                     .event({
                         "type": "TOKEN",
                         "methodArn": "arn:aws:execute-api:us-east-1:436988374415:guouzuadzd/dev/GET/import/Alexa",
@@ -21,7 +21,7 @@ describe('Authorization Test', () => {
             });
 
             it('Should get Allow Unauthorized', async () => {
-                const result = await lambda(basic)
+                const result = await lambda(handler.authorizer)
                     .event({
                         })
                     .expectResult((data) => data);
@@ -30,7 +30,7 @@ describe('Authorization Test', () => {
             });
 
             it('Should get Deny Effect', async () => {
-                const result = await lambda(basic)
+                const result = await lambda(handler.authorizer)
                     .event({
                         "type": "TOKEN",
                         "methodArn": "arn:aws:execute-api:us-east-1:436988374415:guouzuadzd/dev/GET/import/Alexa",

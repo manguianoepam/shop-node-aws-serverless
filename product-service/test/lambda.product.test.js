@@ -2,17 +2,14 @@
 const expect = require('chai').expect;
 const lambda = require('lambda-tester');
 
-const getProductList = require('../get-products').getProductsList;
-const getProductById = require('../get-product').getProductById;
-const createProduct = require('../create-product').createProduct;
-const batch = require('../batch-process').catalogBatchProcess
+const handler = require('../handler');
 
 describe('product-service', () => {
 
     describe('lambdas-aws', () => {
         describe('get-products', () => {
             it('Should return 200 - all products', async () => {
-                const result = await lambda(getProductList)
+                const result = await lambda(handler.products)
                     .event()
                     .expectResult(response => response);
 
@@ -23,7 +20,7 @@ describe('product-service', () => {
 
         describe('get-product', () => {
             it('Should return 500 with productId not provided', async () => {
-                const result = await lambda(getProductById)
+                const result = await lambda(handler.products)
                     .event({'pathParameters': {'productId': ''}})
                     .expectResult(response => response);
 
@@ -32,7 +29,7 @@ describe('product-service', () => {
             });
 
             it('Should return 404 when data is not found', async () => {
-                const result = await lambda(getProductById)
+                const result = await lambda(handler.products)
                     .event({'pathParameters': {'productId': 'ABSC'}})
                     .expectResult(response => response);
 
@@ -42,7 +39,7 @@ describe('product-service', () => {
 
 
             it('Should return 200 with productId', async () => {
-                const result = await lambda(getProductById)
+                const result = await lambda(handler.products)
                     .event({'pathParameters': {'productId': 'ABCDE102030'}})
                     .expectResult(response => response);
 
@@ -53,7 +50,7 @@ describe('product-service', () => {
 
         describe('create-product', () => {
             it('Should return 500 when event is wrong' , async () => {
-                const result = await lambda(createProduct)
+                const result = await lambda(handler.newProduct)
                     .event( {
                         resource: '/products',
                         path: '/products',
@@ -150,7 +147,7 @@ describe('product-service', () => {
             });
 
             it('Should return 501 with not event data', async () => {
-                const result = await lambda(createProduct)
+                const result = await lambda(handler.newProduct)
                     .event({})
                     .expectResult(response => response);
 
@@ -159,7 +156,7 @@ describe('product-service', () => {
             });
 
             it('Should return 502 whit missing data', async () => {
-                const result = await lambda(createProduct)
+                const result = await lambda(handler.newProduct)
                     .event( {
                         resource: '/products',
                         path: '/products',
@@ -256,7 +253,7 @@ describe('product-service', () => {
             });
 
             it('Should return 400 whit wrong data typeof', async () => {
-                const result = await lambda(createProduct)
+                const result = await lambda(handler.newProduct)
                     .event( {
                         resource: '/products',
                         path: '/products',
@@ -354,7 +351,7 @@ describe('product-service', () => {
             });
 
             it('Should return 504 whit wrong data typeof', async () => {
-                const result = await lambda(createProduct)
+                const result = await lambda(handler.newProduct)
                     .event( {
                         resource: '/products',
                         path: '/products',
@@ -452,7 +449,7 @@ describe('product-service', () => {
             });
 
             it('Should return 200 with correct json', async () => {
-                const result = await lambda(createProduct)
+                const result = await lambda(handler.newProduct)
                     .event(
                         {
                             resource: '/products',
@@ -553,7 +550,7 @@ describe('product-service', () => {
 
         describe('batch-lambda', () => {
             it('Getting SQS Message', async () => {
-                const result = await lambda(batch)
+                const result = await lambda(handler.batch)
                     .event(
                         {
                             "Records": [
