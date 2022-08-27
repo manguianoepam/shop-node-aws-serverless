@@ -11,6 +11,7 @@ export class RecipientController {
 
     @Get(':service')
     async useGetMethod(@Param('service') service: string, @Query() query, @Req() req): Promise<any> {
+        console.log(req);
         return this.recipient.getRecipient(service, 'GET', query, req.headers.authorization)
             .then(data => data)
             .catch(error => error);
