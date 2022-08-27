@@ -11,4 +11,12 @@ Endpoint backend: https://o3lc79zr1i.execute-api.us-east-1.amazonaws.com/dev
 #### Description: Get a product by ID
 - productId is required
 - productId is String
-- curl --location --request GET 'https://o3lc79zr1i.execute-api.us-east-1.amazonaws.com/dev/products/ABCDE102030'
+- curl --location --request GET 'https://o3lc79zr1i.execute-api.us-east-1.amazonaws.com/dev/products/ABC001'
+
+### POST - Create product - /product
+#### Description: Create a product
+
+- title: String - is required
+- description: String - is requires
+- price: Number - is required
+- count": Number - is required
